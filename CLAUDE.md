@@ -34,12 +34,18 @@ A portfolio site for a graphic designer, built in Next.js. It is black and blood
   - **Desktop lockup:** a quiet row under the nav (`.who` on the left; `.pitch` = intro + CTA on the right).
   - **Desktop plate:** `--plate-w: min(100vw + 48px, 160svh)`, so the desk sits on black. `.plate` is feathered with an intersected mask: the sides fade out, and the bottom clutter fades into black.
   - **Phones (portrait):** the words stack, with DESIGNER fully above the monitor. The lockup sits at the top with the big name.
-    - `--lock-end` on `.stage` is a safe CSS estimate of the lockup's bottom (it assumes a 4-line intro).
+    - `--lock-end` on `.stage` is a CSS estimate of the lockup's bottom, about 6px below the real one.
+      - It uses `--intro-lines`: 4 below 352px, 3 to 399px, 2 from 400px.
+      - Those breakpoints come from measured sentence widths (314px and 363px at 0.95rem). If the intro copy or font size changes, re-measure.
     - `--plate-top` is `max(bottom-anchored, value that keeps the headline 1.4rem below --lock-end)`. On short phones the desk slides down (its bottom crops) instead of the headline running into "View my work".
     - The `--ink1`/`--ink2`/`--ink-all` vars are set on `.stage` so this calc can see them.
 - `components/About.tsx` on phones (≤767px) uses a magazine-cover layout (the client asked for the name behind his head):
-  - `about.backdrop` is fitted to the width via `antonFit` (`--ink`/`--lsb` on `.pin`). Its baseline sits 10% down the portrait box, so his head overlaps the dark lower part of the letters and the word stays readable.
-  - The two notes flank his head in the dark space beside it, at different heights (note 0 on the left at 13%, note 1 on the right at 22%). Each wraps to two balanced lines (`.noteText`), with its arrow pointing at him.
+  - `about.backdrop` is fitted to the width via `antonFit` (`--ink`/`--lsb` on `.pin`).
+  - Its baseline sits 33% down the portrait box (shoulder level, as the client asked), so his head and neck cover the middle of the word. The trade-off: his face hides the O. To keep the word fully readable, lower the 0.33 factor.
+  - The notes go diagonally around the photo, never on the dashed line or the letters:
+    - Note 0 sits above the box's top-left corner, with its arrow down.
+    - Note 1 sits below the bottom-right corner, with its arrow up.
+    - Both live in the `--note-top`/`--note-bottom` strips inside the pin, because the pin clips with `overflow: hidden`.
   - `--pin-h` trims the pin on tall phones. The box is a true 2:3, at most the content width.
   - There used to be an outlined copy of DESIGNER in front of the plate. It was removed because it added noise once DESIGNER became readable.
   - `.monitorGlow` sits behind the plate (`z-index: -1`) as a backlight. Over the plate, its red screen-blend washed out the monitor artwork and made the image look blurred.

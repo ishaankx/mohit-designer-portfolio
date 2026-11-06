@@ -178,17 +178,20 @@
   .about { --ov-next: 20svh; }
   .shade { background: linear-gradient(180deg, transparent 55%, var(--black) 98%); }
   /*
-    Phones: magazine-cover layout. The name is fitted to the screen width and sits behind the portrait,
-    with his head overlapping its lower part (the letters fade to dark there, so it still reads). The
-    two notes flank his head in the dark space beside it, at different heights, arrows pointing at him.
-    --pin-h trims the pin on tall phones so there is no empty band above the name.
+    Phones: magazine-cover layout. The name is fitted to the screen width and sits behind him at shoulder
+    level: his head and neck cover its middle, and his shoulders meet its baseline. The notes go
+    diagonally around the photo: note 0 top-left beside his hair (above the letters), and note 1 below the
+    box's bottom-right corner. --pin-h trims the pin on tall phones.
   */
   .pin {
     --lfs: calc((100vw - 2 * var(--gutter)) / var(--ink));
     --box-max-h: calc(1.5 * (100vw - 2 * var(--gutter)));
-    --pin-h: min(92svh, calc(var(--nav-h) + 0.62 * var(--lfs) + var(--box-max-h)));
-    --subject-top: max(calc(var(--nav-h) + 0.62 * var(--lfs)), calc(var(--pin-h) - var(--box-max-h)));
-    --box-h: calc(var(--pin-h) - var(--subject-top));
+    /* Strips inside the pin (which clips) for the note above the box and the note below it. */
+    --note-top: 2.4rem;
+    --note-bottom: 2.6rem;
+    --pin-h: min(92svh, calc(var(--nav-h) + var(--note-top) + var(--box-max-h) + var(--note-bottom)));
+    --subject-top: max(calc(var(--nav-h) + var(--note-top)), calc(var(--pin-h) - var(--note-bottom) - var(--box-max-h)));
+    --box-h: calc(var(--pin-h) - var(--subject-top) - var(--note-bottom));
     position: relative;
     height: var(--pin-h);
     margin-bottom: 0;
@@ -198,14 +201,14 @@
     line-height: 0.8;
     left: calc(var(--gutter) - var(--lsb) * 1em);
     right: auto;
-    /* Baseline 10% of the way down the portrait box: behind the hair and forehead. */
-    top: calc(var(--subject-top) + 0.1 * var(--box-h) - 0.72 * var(--lfs));
+    /* Baseline a third of the way down the portrait box, at his shoulders. */
+    top: calc(var(--subject-top) + 0.33 * var(--box-h) - 0.72 * var(--lfs));
     bottom: auto;
     transform-origin: 50% 100%;
   }
   .subject {
     top: var(--subject-top);
-    bottom: 0;
+    bottom: var(--note-bottom);
     right: auto;
     left: 50%;
     height: auto;
@@ -214,8 +217,11 @@
   .note { font-size: clamp(0.8rem, calc(var(--box-h) / 36), 1rem); }
   /* Two balanced lines, narrow enough that the arrow stops short of his face. */
   .noteText { white-space: normal; max-width: 5.2em; text-wrap: balance; }
-  .note[data-n="0"] { right: auto; left: 1%; top: 13%; }
-  .note[data-n="1"] { left: auto; right: 1%; top: 22%; text-align: right; }
+  /* Diagonal: note 0 above the top-left corner (arrow down into the box), note 1 below the bottom-right (arrow up). */
+  .note[data-n="0"] { right: auto; left: 0; top: auto; bottom: calc(100% + 0.3rem); }
+  .note[data-n="1"] { left: auto; right: 0; top: calc(100% + 0.45rem); text-align: right; }
+  .note[data-n="1"] .arrow { transform: scale(-1, -1) rotate(20deg); }
+  .note[data-n="0"] .noteText, .note[data-n="1"] .noteText { max-width: none; }
   .note[data-n="2"] { display: none; }
   .content { min-height: 0; padding-top: 2svh; }
   .copy { width: auto; }

@@ -424,7 +424,12 @@
   .stage {
     --name-fs: clamp(2.75rem, 1.6rem + 5vw, 6rem);
     --intro-fs: 0.95rem;
-    --lock-end: calc(var(--nav-h) + 8px + 1.1 * var(--fs-hand) + 0.86 * var(--name-fs) + 0.8rem + 6 * var(--intro-fs) + 0.6rem + 2.3rem);
+    /*
+      Intro lines by width (measured): 4 below ~360px, 3 on most phones, 2 from ~412px. The breakpoints
+      sit a few px on the safe side. The estimate lands about 6px below the real lockup bottom.
+    */
+    --intro-lines: 4;
+    --lock-end: calc(var(--nav-h) + 8px + 1.1 * var(--fs-hand) + 0.86 * var(--name-fs) + 0.8rem + var(--intro-lines) * 1.5 * var(--intro-fs) + 0.6rem + 2rem);
     --fs1v: calc((100vw - 2 * var(--gutter)) / var(--ink1));
     --fs2v: calc((100vw - 2 * var(--gutter)) / var(--ink2));
   }
@@ -438,10 +443,10 @@
     --mon-w: 54.4%;
     --mon-h: 42.4%;
     --mon-origin: 49.9% 23.7%;
-    /* Headline top = monitor-top - 0.9*fs1 - 0.64*fs2 must clear --lock-end by 1.4rem. */
+    /* Headline top = monitor-top - 0.9*fs1 - 0.64*fs2 must clear --lock-end by 1.25rem. */
     --plate-top: max(
       calc(100svh - var(--plate-h)),
-      calc(var(--lock-end) + 1.4rem + 0.9 * var(--fs1v) + 0.64 * var(--fs2v) - var(--mon-y) * var(--plate-h))
+      calc(var(--lock-end) + 1.25rem + 0.9 * var(--fs1v) + 0.64 * var(--fs2v) - var(--mon-y) * var(--plate-h))
     );
   }
 
@@ -475,6 +480,13 @@
   .deskLayer, .plateBox { will-change: transform; }
   .textLayer { will-change: transform, opacity; }
 }
+
+/*
+  Intro line count for --lock-end (phone layout only; the desktop layout never reads it). The sentences
+  measure 314px and 363px at 0.95rem, so they fit on one line from 346px and 395px wide (2 x 16px gutter).
+*/
+@media (min-width: 352px) { .stage { --intro-lines: 3; } }
+@media (min-width: 400px) { .stage { --intro-lines: 2; } }
 
 @media (max-width: 767px), (pointer: coarse) {
   .hero { height: 300svh; }
