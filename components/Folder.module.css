@@ -1,0 +1,134 @@
+.folder {
+  --o: 0;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  text-align: center;
+  outline-offset: 12px;
+  transition: opacity 0.45s, filter 0.45s;
+}
+
+.folder[data-open], .folder:focus-visible { --o: 1; }
+
+@media (hover: hover) and (pointer: fine) {
+  .folder:hover { --o: 1; }
+}
+
+.folder[data-leaving] { z-index: 50; }
+
+.icon {
+  position: relative;
+  width: min(100%, 300px);
+  aspect-ratio: 1.25;
+  margin: 18% 0 1.2rem;
+  perspective: 800px;
+  translate: 0 calc(var(--o) * 14px);
+  transition: translate 0.6s var(--ease-out);
+}
+
+.glow {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: -40%;
+  height: 110%;
+  z-index: 1;
+  background: radial-gradient(closest-side, rgb(255 77 94 / 0.5), rgb(227 43 60 / 0.18) 55%, transparent);
+  mix-blend-mode: screen;
+  opacity: var(--o);
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.back {
+  position: absolute;
+  inset: 9% 0 0;
+  background: linear-gradient(180deg, var(--blood-700), var(--blood-800) 60%, var(--blood-900));
+  border-radius: 3px 7px 7px 7px;
+  box-shadow: inset 0 1px 0 rgb(255 77 94 / 0.45), 0 26px 50px -20px rgb(26 3 6 / 0.95);
+}
+
+.back::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  width: 42%;
+  height: 11%;
+  background: var(--blood-700);
+  border-radius: 6px 10px 0 0;
+  clip-path: polygon(0 0, 80% 0, 100% 100%, 0 100%);
+  box-shadow: inset 0 1px 0 rgb(255 77 94 / 0.45);
+}
+
+.sheets {
+  position: absolute;
+  left: 13%;
+  right: 13%;
+  top: 15%;
+  bottom: 8%;
+  z-index: 2;
+}
+
+.sheet {
+  --dx: 0%;
+  --dy: -40%;
+  --r: 0deg;
+  --d: 0s;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px rgb(244 239 234 / 0.2), 0 18px 40px -16px rgb(26 3 6 / 0.95);
+  transform-origin: 50% 100%;
+  transform: translate3d(calc(var(--o) * var(--dx)), calc(var(--o) * var(--dy)), 0) rotate(calc(var(--o) * var(--r)));
+  transition: transform 0.9s var(--ease-spring) calc(var(--o) * var(--d));
+}
+
+.sheet > svg, .sheet > img { width: 100%; height: 100%; }
+
+.sheet:nth-child(1) { --dx: -24%; --dy: -30%; --r: -11deg; --d: 0.08s; }
+.sheet:nth-child(2) { --dx: 22%; --dy: -34%; --r: 9deg; --d: 0.04s; }
+.sheet:nth-child(3) { --dx: 0%; --dy: -46%; --r: -1.5deg; --d: 0s; }
+
+.flap {
+  position: absolute;
+  inset: 32% 0 0;
+  z-index: 3;
+  background: linear-gradient(180deg, var(--blood-500) 0%, var(--blood-600) 16%, var(--blood-700) 68%, var(--blood-800));
+  border-radius: 4px 4px 7px 7px;
+  box-shadow: inset 0 1px 0 var(--crimson-hot), inset 0 -24px 34px -12px rgb(26 3 6 / 0.65), 0 10px 30px -10px rgb(26 3 6 / 0.9);
+  transform-origin: 50% 100%;
+  transform: rotateX(calc(var(--o) * -38deg));
+  transition: transform 0.7s var(--ease-out);
+}
+
+.flap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 30%, rgb(255 138 147 / 0.16) 46%, transparent 60%);
+  opacity: calc(0.35 + var(--o) * 0.65);
+  transition: opacity 0.5s;
+}
+
+.name {
+  padding: 0.12em 0.45em;
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--paper);
+  background: linear-gradient(var(--blood-500), var(--blood-500)) 0 0 / calc(var(--o) * 100%) 100% no-repeat;
+  transition: background-size 0.35s var(--ease-out);
+}
+
+.year {
+  font-size: 0.85rem;
+  color: var(--paper-60);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon, .sheet, .flap, .glow, .name { transition-duration: 0.01s; transition-delay: 0s; }
+}
