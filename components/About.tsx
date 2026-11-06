@@ -76,7 +76,7 @@ export default function About() {
           </div>
           {about.notes.map((note, i) => (
             <p key={note} className={s.note} data-n={i} data-about="note" aria-hidden="true">
-              {note}
+              <span className={s.noteText}>{note}</span>
               <svg viewBox="0 0 60 30" className={s.arrow}>
                 <path d="M2 4 C 20 4, 38 10, 54 24 M54 24 L44 22 M54 24 L52 14" />
               </svg>

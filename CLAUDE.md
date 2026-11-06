@@ -37,11 +37,10 @@ A portfolio site for a graphic designer, built in Next.js. It is black and blood
     - `--lock-end` on `.stage` is a safe CSS estimate of the lockup's bottom (it assumes a 4-line intro).
     - `--plate-top` is `max(bottom-anchored, value that keeps the headline 1.4rem below --lock-end)`. On short phones the desk slides down (its bottom crops) instead of the headline running into "View my work".
     - The `--ink1`/`--ink2`/`--ink-all` vars are set on `.stage` so this calc can see them.
-- `components/About.tsx` on phones (≤767px), top to bottom:
-  - `about.backdrop` is fitted to the width via `antonFit` (`--ink`/`--lsb` on `.pin`).
-  - A band holds both notes; their arrows point down into the box, and their font is sized from `--box-w` so they never collide.
-  - The portrait box is stretched from `--subject-top` to the bottom of the pin.
-  - Nothing sits on the dashed selection line.
+- `components/About.tsx` on phones (≤767px) uses a magazine-cover layout (the client asked for the name behind his head):
+  - `about.backdrop` is fitted to the width via `antonFit` (`--ink`/`--lsb` on `.pin`). Its baseline sits 10% down the portrait box, so his head overlaps the dark lower part of the letters and the word stays readable.
+  - The two notes flank his head in the dark space beside it, at different heights (note 0 on the left at 13%, note 1 on the right at 22%). Each wraps to two balanced lines (`.noteText`), with its arrow pointing at him.
+  - `--pin-h` trims the pin on tall phones. The box is a true 2:3, at most the content width.
   - There used to be an outlined copy of DESIGNER in front of the plate. It was removed because it added noise once DESIGNER became readable.
   - `.monitorGlow` sits behind the plate (`z-index: -1`) as a backlight. Over the plate, its red screen-blend washed out the monitor artwork and made the image look blurred.
   - There is no scroll indicator. It was removed at the client's request.
