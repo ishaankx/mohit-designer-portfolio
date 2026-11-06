@@ -1,5 +1,7 @@
 import { getImageProps } from "next/image";
+import type { CSSProperties } from "react";
 import { NAME, about } from "@/content/site";
+import { antonFit } from "@/lib/fit";
 import { hasAsset } from "@/lib/assets";
 import { blur } from "@/lib/placeholders";
 import Swatches from "./Swatches";
@@ -29,6 +31,7 @@ function Lamp({ className }: { className?: string }) {
 }
 
 export default function About() {
+  const backdrop = antonFit(about.backdrop);
   const portrait = hasAsset("images/portrait-cutout.webp");
   const img = portrait
     ? getImageProps({
@@ -45,7 +48,8 @@ export default function About() {
 
   return (
     <section id="about" className={s.about} data-scene="about" aria-labelledby="about-title">
-      <div className={s.pin}>
+      {/* Ink width of the backdrop word, so phones can fit it to the screen width (see About.module.css). */}
+      <div className={s.pin} style={{ "--ink": backdrop.ink, "--lsb": backdrop.lsb } as CSSProperties}>
         <div className={s.backdrop} aria-hidden="true">
           <span className={s.letters} data-about="letters">
             {about.backdrop}

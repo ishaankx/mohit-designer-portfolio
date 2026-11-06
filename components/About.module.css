@@ -178,11 +178,41 @@
   .about { --ov-next: 20svh; }
   .pin { position: relative; height: 92svh; margin-bottom: 0; }
   .shade { background: linear-gradient(180deg, transparent 55%, var(--black) 98%); }
-  .letters { font-size: 64vw; right: -12vw; bottom: auto; top: 18svh; }
-  .subject { right: auto; left: 50%; translate: -50% 0; height: min(70svh, 140vw); }
-  .note { font-size: 1.1rem; }
-  .note[data-n="0"] { right: auto; left: 4%; top: 1%; }
-  .note[data-n="1"] { left: auto; right: 4%; top: 1%; }
+  /*
+    Phones, top to bottom: the name fitted to the screen width, a band for the two notes, then the
+    portrait box. Nothing overlaps the dashed selection.
+  */
+  .pin {
+    --lfs: calc((100vw - 2 * var(--gutter)) / var(--ink));
+    --subject-top: calc(var(--nav-h) + 10px + 0.74 * var(--lfs) + 3.4rem);
+    /* Box width (2:3, stretched between --subject-top and the bottom of the 92svh pin). */
+    --box-w: calc((92svh - var(--subject-top)) * 2 / 3);
+  }
+  .letters {
+    font-size: var(--lfs);
+    line-height: 0.8;
+    left: calc(var(--gutter) - var(--lsb) * 1em);
+    right: auto;
+    top: calc(var(--nav-h) + 10px);
+    bottom: auto;
+    transform-origin: 50% 100%;
+  }
+  .subject {
+    top: var(--subject-top);
+    bottom: 0;
+    right: auto;
+    left: 50%;
+    height: auto;
+    max-width: calc(100vw - 2 * var(--gutter));
+    translate: -50% 0;
+  }
+  /* Both notes and their arrows need about 18em side by side above the box, so size them from its width. */
+  .note { font-size: clamp(0.75rem, calc(var(--box-w) / 18), 1.05rem); }
+  /* Both notes sit in the band above the box; their arrows point down into it, not at each other. */
+  .note[data-n="0"], .note[data-n="1"] { top: auto; bottom: calc(100% + 0.35rem); }
+  .note[data-n="0"] { right: auto; left: 0; }
+  .note[data-n="1"] { left: auto; right: 0; flex-direction: row; }
+  .note[data-n="1"] .arrow { transform: none; }
   .note[data-n="2"] { display: none; }
   .content { min-height: 0; padding-top: 2svh; }
   .copy { width: auto; }

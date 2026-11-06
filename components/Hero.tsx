@@ -70,7 +70,7 @@ export default function Hero() {
       <div
         className={s.stage}
         data-plate={plate}
-        style={{ "--blur-d": `url(${blur.desk})`, "--blur-m": `url(${blur.deskMobile})` } as Vars}
+        style={{ ...inks, "--blur-d": `url(${blur.desk})`, "--blur-m": `url(${blur.deskMobile})` } as Vars}
       >
         <div className={s.bg} aria-hidden="true">
           <span className={s.pool} />
@@ -80,7 +80,7 @@ export default function Hero() {
         </div>
 
         <div className={s.textLayer} data-hero="text">
-          <div className={s.textPx} data-hero="textpx" style={inks}>
+          <div className={s.textPx} data-hero="textpx">
             <h1 id="hero-title" className={s.title}>
               <span className="sr-only">{hero.words.join(" ")}</span>
               {lines.map((line, li) => (

@@ -34,6 +34,14 @@ A portfolio site for a graphic designer, built in Next.js. It is black and blood
   - **Desktop lockup:** a quiet row under the nav (`.who` on the left; `.pitch` = intro + CTA on the right).
   - **Desktop plate:** `--plate-w: min(100vw + 48px, 160svh)`, so the desk sits on black. `.plate` is feathered with an intersected mask: the sides fade out, and the bottom clutter fades into black.
   - **Phones (portrait):** the words stack, with DESIGNER fully above the monitor. The lockup sits at the top with the big name.
+    - `--lock-end` on `.stage` is a safe CSS estimate of the lockup's bottom (it assumes a 4-line intro).
+    - `--plate-top` is `max(bottom-anchored, value that keeps the headline 1.4rem below --lock-end)`. On short phones the desk slides down (its bottom crops) instead of the headline running into "View my work".
+    - The `--ink1`/`--ink2`/`--ink-all` vars are set on `.stage` so this calc can see them.
+- `components/About.tsx` on phones (≤767px), top to bottom:
+  - `about.backdrop` is fitted to the width via `antonFit` (`--ink`/`--lsb` on `.pin`).
+  - A band holds both notes; their arrows point down into the box, and their font is sized from `--box-w` so they never collide.
+  - The portrait box is stretched from `--subject-top` to the bottom of the pin.
+  - Nothing sits on the dashed selection line.
   - There used to be an outlined copy of DESIGNER in front of the plate. It was removed because it added noise once DESIGNER became readable.
   - `.monitorGlow` sits behind the plate (`z-index: -1`) as a backlight. Over the plate, its red screen-blend washed out the monitor artwork and made the image look blurred.
   - There is no scroll indicator. It was removed at the client's request.

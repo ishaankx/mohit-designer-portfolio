@@ -415,6 +415,20 @@
 }
 
 @media (max-width: 767px), (max-aspect-ratio: 4/5) {
+  /*
+    Phones: the name block is laid out from the top and the desk from the bottom. --lock-end is a safe
+    estimate of where the name block ends (it assumes the intro wraps to 4 lines). The desk stays
+    bottom-anchored unless that would push the stacked headline into the name block; then the desk
+    slides down instead and its bottom crops.
+  */
+  .stage {
+    --name-fs: clamp(2.75rem, 1.6rem + 5vw, 6rem);
+    --intro-fs: 0.95rem;
+    --lock-end: calc(var(--nav-h) + 8px + 1.1 * var(--fs-hand) + 0.86 * var(--name-fs) + 0.8rem + 6 * var(--intro-fs) + 0.6rem + 2.3rem);
+    --fs1v: calc((100vw - 2 * var(--gutter)) / var(--ink1));
+    --fs2v: calc((100vw - 2 * var(--gutter)) / var(--ink2));
+  }
+
   .stage[data-plate="dual"] {
     --plate-ar: 1.2705;
     --plate-w: min(112vw, max(calc(100vw + 32px), calc(58svh * 1.2705)));
@@ -424,7 +438,11 @@
     --mon-w: 54.4%;
     --mon-h: 42.4%;
     --mon-origin: 49.9% 23.7%;
-    --plate-top: calc(100svh - var(--plate-h));
+    /* Headline top = monitor-top - 0.9*fs1 - 0.64*fs2 must clear --lock-end by 1.4rem. */
+    --plate-top: max(
+      calc(100svh - var(--plate-h)),
+      calc(var(--lock-end) + 1.4rem + 0.9 * var(--fs1v) + 0.64 * var(--fs2v) - var(--mon-y) * var(--plate-h))
+    );
   }
 
   .stage[data-plate="dual"] .plateBlur { background-image: var(--blur-m); }
@@ -444,7 +462,8 @@
   }
 
   .pitch { margin-top: 0.8rem; gap: 0.6rem; }
-  .name { font-size: clamp(3.2rem, 2rem + 5.4vw, 8.5rem); }
+  .name { font-size: var(--name-fs); }
+  .intro { font-size: var(--intro-fs); }
 }
 
 /*
